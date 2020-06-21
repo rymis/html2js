@@ -1,0 +1,52 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>TODO</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <!-- Here we will place rendered application. Model name is a name of global variable containing model. -->
+        <render name="Application">
+            <ul>
+                <!-- for iterates over the model field. Collection will be created implicitly for this field. -->
+                <for var="todo" in="todos">
+                    <!-- You can use standard javascript constructions in templates -->
+                    <li class="{{todo.done?'done':'waiting'}}">
+                        <if condition="todo.done">
+                            <img src="done.png">
+                            <else>
+                                <img src="waiting.png">
+                            </else>
+                        </if>
+                        <!-- This text will be taken from todo.text element -->
+                        {{todo.text}}
+                        <button onclick="removeItem({{todo.elementIndex()}})" value="X">
+                        <button onclick="toggleDone({{todo.elementIndex()}})" value="V">
+                    </li>
+                </for>
+            </ul>
+            <!-- Here I use square braces which means I want to create bidirectional binding -->
+            <input type="text" bind-value="newItem"><button value="Add" onclick="addItem()">
+            <widget class="MyWidget" name="widget"></widget>
+        </render>
+
+        <script>
+var app = new Application();
+
+function removeItem(idx) {
+    app.todo.removeItem(idx);
+}
+
+function toggleDone(idx) {
+    app.todo[idx].done = !data.todo[idx].done;
+}
+
+function addItem() {
+    app.todo.push({"text": app.newItem, "done": false});
+}
+
+app.mount("#app");
+        </script>
+
+    </body>
+</html>
